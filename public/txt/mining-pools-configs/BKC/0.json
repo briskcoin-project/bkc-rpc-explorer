@@ -38,7 +38,11 @@
       },
         "thepool.life": {
         "name": "Thepool.life",
-        "link": "Thepool.life"    
+        "link": "Thepool.life"
+      },
+        "NitroPool": {
+        "name": "NitroPool",
+        "link": "https://nitropool.net"    
       }
     },
       "payout_addresses": {
