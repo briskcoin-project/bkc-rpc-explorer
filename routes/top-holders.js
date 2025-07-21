@@ -4,7 +4,7 @@ const axios = require("axios");
 
 router.get("/", async (req, res) => {
   try {
-    const response = await axios.get("http://159.65.56.161:5110/api/top-holder?limit=150");
+    const response = await axios.get("http://top-holder.briskcoin.org:5110/api/top-holder?limit=150");
     const data = response.data || [];
 
     const page = parseInt(req.query.page) || 1;
