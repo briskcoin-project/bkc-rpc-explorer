@@ -570,35 +570,27 @@ module.exports = {
 
 		return blockRewardEras[index];
 	},
-	/*blockRewardFunction:function(blockHeight, chain) {
-		let halvingBlockInterval = (chain == "regtest" ? 150 : 210000);
-		let index = Math.floor(blockHeight / halvingBlockInterval);
-
-		return blockRewardEras[index];
-	},*/
 	// Updated for BKC
-	blockRewardFunction2: function(blockHeight, chain) {
-		//console.log("BH" + blockHeight);
-		var halvings = 2102400;
-		var getrw = 0;
-		var reward = 0;
+	blockRewardFunction2: function (blockHeight, chain) {
+		//console.log("Using blockRewardFunction2, height:", blockHeight);
+		const halvingInterval = 2102400;
+		let reward = 0;
 
-		if (blockHeight > 1 && blockHeight <= 50000) {
-			getrw = 50;
-		} else if (blockHeight > 50001 && blockHeight <= 100000) {
-			getrw = 20;
-		} else if (blockHeight > 100001 && blockHeight <= 500000) {
-			getrw = 10;
-		} else {
-			reward = 5;
-			// Compute number of halvings (starting from first full period)
-			var halvingsCount = Math.floor(blockHeight / halvings);
-			// Divide reward accordingly
-			reward = reward / Math.pow(2, halvingsCount);
-
-			getrw = reward;
+		if (blockHeight >= 1 && blockHeight <= 50000) {
+			reward = 50;
+		} else if (blockHeight > 50000 && blockHeight <= 100000) {
+			reward = 20;
+		} else if (blockHeight > 100000 && blockHeight <= 500000) {
+			reward = 10;
+		} else if (blockHeight > 500000) {
+			const baseReward = 5;
+			const halvingsCount = Math.floor((blockHeight - 500001) / halvingInterval);
+			reward = baseReward / Math.pow(2, halvingsCount);
+			//console.log("Block:", blockHeight, "→ Halvings:", halvingsCount, "→ Reward:", reward);
 		}
 
-		return getrw;
+		return Math.round(reward * 1e8) / 1e8;
 	}
+
+
 };
