@@ -170,6 +170,9 @@ block endOfBody
 			$("#block-selections-buttons .dropdown-item").removeClass("disabled");
 
 			//console.log(JSON.stringify(results));
+			// ✅ FIX: Clear duplicates before adding new rows
+			$("#summary-table-body .miner-summary-row").remove();
+
 
 			var totalSubsidyPlusFees = new Decimal(summary.overall.totalSubsidy).plus(new Decimal(summary.overall.totalFees));
 
@@ -183,7 +186,8 @@ block endOfBody
 				var minerName = summary.minerNamesSortedByBlockCount[i];
 				var minerSummary = summary.miners[minerName];
 
-				var row = $("#miner-summary-prototype").clone();
+				// ✅ Also clone(true) to ensure full deep clone and avoid issues
+				var row = $("#miner-summary-prototype").clone(true);
 				row.attr("id", null);
 				row.addClass("miner-summary-row");
 
