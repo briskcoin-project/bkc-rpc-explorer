@@ -4,8 +4,14 @@ const axios = require("axios");
 
 router.get("/", async (req, res) => {
   try {
-    const response = await axios.get("http://top-holder.briskcoin.org:5110/api/top-holder?limit=150");
-    const data = response.data || [];
+    // Fetch top holders data
+    const [holdersResponse, totalAddressesResponse] = await Promise.all([
+      axios.get("http://iquidus.briskcoin.org:5110/api/top-holder?limit=150"),
+      axios.get("http://iquidus.briskcoin.org:5110/api/gettotaladdresses")
+    ]);
+
+    const data = holdersResponse.data || [];
+    const totalAddresses = totalAddressesResponse.data?.total_addresses || 0;
 
     const page = parseInt(req.query.page) || 1;
     const limit = 20;
@@ -17,8 +23,9 @@ router.get("/", async (req, res) => {
       currentPage: page,
       totalPages: Math.ceil(data.length / limit),
       hasData: data.length > 0,
+      totalAddresses: totalAddresses,
       userSettings: {
-        uiTheme: req.cookies.uiTheme || 'light' // Get from cookie or default
+        uiTheme: req.cookies.uiTheme || 'light'
       }
     });
     
@@ -28,6 +35,7 @@ router.get("/", async (req, res) => {
       title: "Top Holders",
       topHolders: [],
       error: "Failed to fetch data from API",
+      totalAddresses: 0,
       userSettings: {
         uiTheme: req.cookies.uiTheme || 'light'
       },
