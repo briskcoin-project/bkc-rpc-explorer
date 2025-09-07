@@ -168,7 +168,7 @@ function getcurrentsupply() {
 	});
 	var data;
 	try {
-		const filePath = '/root/bkc-rpc-explorer/supply.log';
+		const filePath = '/root/bkc-rpc-explorer-3.5.1/supply.log';
 		if (fs.existsSync(filePath)) {
 			data = fs.readFileSync(filePath, 'utf8');
 			totalcurrentsupply = (data / 100000000);
@@ -185,7 +185,7 @@ function getcurrentsupply() {
 
 function getprice() {
 	const fs = require('fs');
-	const filePath = '/root/bkc-rpc-explorer/price.log';
+	const filePath = '/root/bkc-rpc-explorer-3.5.1/price.log';
 	let fresult = 0;
 	fetch("https://api.briskcoin.org/getprice")
 		.then(r => r.json())
